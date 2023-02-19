@@ -1,0 +1,44 @@
+body {
+    font-size: 18px;
+}
+
+.page-wrapper {
+max-width: 800px;
+height: 100%;
+}
+#navbar {
+    font-size: 3rem;
+}
+nav span {
+    font-weight: 100;
+}
+.font-box {
+    width: 150px;
+}
+.sun-moon-icons {
+    font-size: 1.5rem;
+}
+#moon-icon {
+    display: none;
+}
+.form-text {
+    width: 200px;
+}
+.part-of-speech hr {
+    width: 88%;
+}
+
+.link {
+    text-decoration: none;
+    color: blueviolet;
+}
+#play {
+    margin-right: 20px;
+    font-size: 2rem;
+}
+#play:hover {
+    color:red
+}
+#play:active, #synonym { 
+    color: blueviolet;
+}
