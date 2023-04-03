@@ -14,7 +14,7 @@ const secondList = document.querySelector('#second-list');
 const synonym = document.querySelector('#synonym');
 const sourceLink = document.querySelector('#source-link');
 
-window.addEventListener('load', () => {
+window.addEventListener('DOMContentLoaded', () => {
     wordFunc();
     removePriorMeanings();
     meaningFunc();
@@ -27,8 +27,8 @@ window.addEventListener('load', () => {
 
 
 
-const getData = async (when) => {
-    if (when === 'click') {
+const getData = async (dataEventType) => {
+    if (dataEventType === 'click') {
         const dictionaryData = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${search.value}`);
         return dictionaryData.data[0]
     } else {
@@ -37,19 +37,19 @@ const getData = async (when) => {
     }
 
 }
-const phoneticFunc = async (when) => {
-    const data = await getData(when);
+const phoneticFunc = async (dataEventType) => {
+    const data = await getData(dataEventType);
     enunciate.textContent = data.phonetic
 }
-const wordFunc = async (when) => {
-    const data = await getData(when);
+const wordFunc = async (dataEventType) => {
+    const data = await getData(dataEventType);
     let firstLetter = data.word.slice(0, 1).toUpperCase();
     let rest = data.word.slice(1);
     word.textContent = firstLetter + rest
     search.value = '';
 }
-const phoneticAudio = async (when) => {
-    const data = await getData(when);
+const phoneticAudio = async (dataEventType) => {
+    const data = await getData(dataEventType);
     let phoneticArray = data.phonetics
     for (let singleArray of phoneticArray) {
         let audioSrc = singleArray.audio
@@ -65,8 +65,8 @@ playButton.addEventListener('click', () => {
     audio.play();
 })
 
-const partOfSpeechFunc = async (when) => {
-    const data = await getData(when);
+const partOfSpeechFunc = async (dataEventType) => {
+    const data = await getData(dataEventType);
     const meaningArray = data.meanings
     const firstMeaningObject = meaningArray[0]
     const secondMeaningObject = meaningArray[1]
@@ -78,8 +78,8 @@ const partOfSpeechFunc = async (when) => {
     secondPOS.textContent = secondPOSFirstLetter.toUpperCase() + secondPOSOtherLetters
 }
 
-const meaningFunc = async (when) => {
-    const data = await getData(when);
+const meaningFunc = async (dataEventType) => {
+    const data = await getData(dataEventType);
     const meaningArray = data.meanings
     for (let meaning in meaningArray) {
         let partOfSpeechList = meaningArray[meaning]
@@ -110,13 +110,13 @@ const removePriorMeanings = () => {
         }
     } catch {}
 }
-const sourceFunc = async (when) => {
-    const data = await getData(when);
+const sourceFunc = async (dataEventType) => {
+    const data = await getData(dataEventType);
     const source = data.sourceUrls
     sourceLink.href = source[0]
 }
-const synonymFunc = async (when) => {
-    const data = await getData(when)
+const synonymFunc = async (dataEventType) => {
+    const data = await getData(dataEventType)
     const meaningsArray = data.meanings
     const meaningArray = meaningsArray[0]
     const synonymArray = meaningArray.synonyms
@@ -139,6 +139,6 @@ form.addEventListener('submit', (e) => {
     synonymFunc('click');
 });
 //goal: follow the logic of meaning func to build all the other functions 
-//Ultimate goal: When search is clicked, build the whole page
+//Ultimate goal: dataEventType search is clicked, build the whole page
 //GOOD JOB GOAT 
 //Next have start up code so the page isn't blank and synonym link as well as source url
