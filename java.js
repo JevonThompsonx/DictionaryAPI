@@ -13,7 +13,7 @@ const firstList = document.querySelector('#first-list');
 const secondList = document.querySelector('#second-list');
 const synonym = document.querySelector('#synonym');
 const sourceLink = document.querySelector('#source-link');
-
+const sunAndMoonIcons = document.querySelector('.sun-moon-icons')
 window.addEventListener('DOMContentLoaded', () => {
     wordFunc();
     removePriorMeanings();
@@ -139,7 +139,7 @@ form.addEventListener('submit', (e) => {
     sourceFunc('click');
     synonymFunc('click');
 });
-//goal: follow the logic of meaning func to build all the other functions 
-//Ultimate goal: dataEventType search is clicked, build the whole page
-//GOOD JOB GOAT 
-//Next have start up code so the page isn't blank and synonym link as well as source url
+
+sunAndMoonIcons.addEventListener('click', ()=> {
+    
+})
