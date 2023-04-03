@@ -14,6 +14,10 @@ const secondList = document.querySelector('#second-list');
 const synonym = document.querySelector('#synonym');
 const sourceLink = document.querySelector('#source-link');
 const sunAndMoonIcons = document.querySelector('.sun-moon-icons')
+const body = document.querySelector('body')
+const sunIcon = document.querySelector('.fa-sun')
+const moonIcon = document.querySelector('.fa-cloud-moon')
+
 window.addEventListener('DOMContentLoaded', () => {
     wordFunc();
     removePriorMeanings();
@@ -32,7 +36,7 @@ const getData = async (dataEventType) => {
         const dictionaryData = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${search.value}`);
         return dictionaryData.data[0]
     } else //on DOMContentLoaded Event
-     {
+    {
         const dictionaryData = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/keyboard`);
         return dictionaryData.data[0]
     }
@@ -123,7 +127,7 @@ const synonymFunc = async (dataEventType) => {
     const synonymArray = meaningArray.synonyms
     let synonymWord = synonymArray[0]
     let synonym1st = synonymWord[0]
-     synonym1st = synonym1st.toUpperCase()
+    synonym1st = synonym1st.toUpperCase()
     const synonym2nd = synonymWord.slice(1)
     synonymWord = synonym1st + synonym2nd
     synonym.textContent = `Synonym: ${synonymWord}`
@@ -140,6 +144,39 @@ form.addEventListener('submit', (e) => {
     synonymFunc('click');
 });
 
-sunAndMoonIcons.addEventListener('click', ()=> {
-    
+let sunOn = () => {
+    moonIcon.style.display = 'none'
+    sunIcon.style.display = 'inline-block'
+}
+let moonOn = () => {
+    sunIcon.style.display = 'none'
+    moonIcon.style.display = 'inline-block'
+}
+
+let themeSwitchVar
+window.addEventListener('DOMContentLoaded', () => {
+    if (window.matchMedia) {
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            sunOn();
+            themeSwitchVar = 1
+        } else {
+            themeSwitchVar = 0
+            moonOn();
+        }
+    } else {}
+
+})
+sunAndMoonIcons.addEventListener('click', () => {
+    themeSwitchVar++
+    if (themeSwitchVar % 2 === 0) {
+        moonOn();
+
+        body.style.color = 'black';
+        body.style.backgroundColor = 'white'
+    } else {
+        sunOn();
+
+        body.style.color = 'white';
+        body.style.backgroundColor = 'black'
+    }
 })
