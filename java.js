@@ -31,7 +31,8 @@ const getData = async (dataEventType) => {
     if (dataEventType === 'click') {
         const dictionaryData = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${search.value}`);
         return dictionaryData.data[0]
-    } else {
+    } else //on DOMContentLoaded Event
+     {
         const dictionaryData = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/keyboard`);
         return dictionaryData.data[0]
     }
