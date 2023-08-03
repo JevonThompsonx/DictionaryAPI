@@ -19,20 +19,11 @@ const sunIcon = document.querySelector('.fa-sun')
 const moonIcon = document.querySelector('.fa-cloud-moon')
 
 window.addEventListener('DOMContentLoaded', () => {
-    wordFunc();
-    removePriorMeanings();
-    meaningFunc();
-    phoneticFunc();
-    phoneticAudio();
-    partOfSpeechFunc();
-    sourceFunc();
-    synonymFunc();
+    fillPage();
 });
 
-
-
-const getData = async (dataEventType) => {
-    if (dataEventType === 'click') {
+const getData = async (dataType) => {
+    if (dataType === 'click') {
         const dictionaryData = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${search.value}`);
         return dictionaryData.data[0]
     } else //on DOMContentLoaded Event
@@ -42,19 +33,29 @@ const getData = async (dataEventType) => {
     }
 
 }
-const phoneticFunc = async (dataEventType) => {
-    const data = await getData(dataEventType);
+
+const fillPage= async(dataType = 'rand')=> {
+    data = await getData(dataType);
+    wordFunc();
+    removePriorMeanings();
+    meaningFunc();
+    phoneticFunc();
+    phoneticAudio();
+    partOfSpeechFunc();
+    sourceFunc();
+    synonymFunc();
+
+} 
+const phoneticFunc = async () => {
     enunciate.textContent = data.phonetic
 }
-const wordFunc = async (dataEventType) => {
-    const data = await getData(dataEventType);
+const wordFunc = async () => {
     let firstLetter = data.word.slice(0, 1).toUpperCase();
     let rest = data.word.slice(1);
     word.textContent = firstLetter + rest
     search.value = '';
 }
-const phoneticAudio = async (dataEventType) => {
-    const data = await getData(dataEventType);
+const phoneticAudio = async () => {
     let phoneticArray = data.phonetics
     for (let singleArray of phoneticArray) {
         let audioSrc = singleArray.audio
@@ -70,8 +71,7 @@ playButton.addEventListener('click', () => {
     audio.play();
 })
 
-const partOfSpeechFunc = async (dataEventType) => {
-    const data = await getData(dataEventType);
+const partOfSpeechFunc = async () => {
     const meaningArray = data.meanings
     const firstMeaningObject = meaningArray[0]
     const secondMeaningObject = meaningArray[1]
@@ -83,8 +83,7 @@ const partOfSpeechFunc = async (dataEventType) => {
     secondPOS.textContent = secondPOSFirstLetter.toUpperCase() + secondPOSOtherLetters
 }
 
-const meaningFunc = async (dataEventType) => {
-    const data = await getData(dataEventType);
+const meaningFunc = async () => {
     const meaningArray = data.meanings
     for (let meaning in meaningArray) {
         let partOfSpeechList = meaningArray[meaning]
@@ -115,13 +114,11 @@ const removePriorMeanings = () => {
         }
     } catch {}
 }
-const sourceFunc = async (dataEventType) => {
-    const data = await getData(dataEventType);
+const sourceFunc = async () => {
     const source = data.sourceUrls
     sourceLink.href = source[0]
 }
-const synonymFunc = async (dataEventType) => {
-    const data = await getData(dataEventType)
+const synonymFunc = async () => {
     const meaningsArray = data.meanings
     const meaningArray = meaningsArray[0]
     const synonymArray = meaningArray.synonyms
@@ -134,14 +131,7 @@ const synonymFunc = async (dataEventType) => {
 }
 form.addEventListener('submit', (e) => {
     e.preventDefault();
-    wordFunc('click');
-    removePriorMeanings('click');
-    meaningFunc('click');
-    phoneticFunc('click');
-    phoneticAudio('click');
-    partOfSpeechFunc('click');
-    sourceFunc('click');
-    synonymFunc('click');
+    fillPage('click')
 });
 
 let sunOn = () => {
