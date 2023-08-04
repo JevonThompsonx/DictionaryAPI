@@ -19,22 +19,35 @@ const sunIcon = document.querySelector('.fa-sun')
 const moonIcon = document.querySelector('.fa-cloud-moon')
 
 window.addEventListener('DOMContentLoaded', () => {
-    fillPage();
+    try {
+    fillPage('rand');
+    }
+    catch {
+        fillPage();
+    }
 });
 
 const getData = async (dataType) => {
     if (dataType === 'click') {
         const dictionaryData = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${search.value}`);
         return dictionaryData.data[0]
-    } else //on DOMContentLoaded Event
-    {
+ 
+    }
+    else if (dataType === 'rand') {
+        const rawData = await axios.get('https://random-word-api.herokuapp.com/word')
+        const randomWord = (rawData.data[0])
+        const dictionaryData = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${randomWord}`);
+        return dictionaryData.data[0]
+  
+    }
+    else {
         const dictionaryData = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/keyboard`);
         return dictionaryData.data[0]
     }
 
 }
 
-const fillPage= async(dataType = 'rand')=> {
+const fillPage= async(dataType)=> {
     data = await getData(dataType);
     wordFunc();
     removePriorMeanings();
