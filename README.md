@@ -17,4 +17,3 @@
 - Dark/Light mode toggle on top right using sun/moon icon
 
 [Link to other projects](https://web-dev-jev-blogsite.ue.r.appspot.com/#project-section)
-
