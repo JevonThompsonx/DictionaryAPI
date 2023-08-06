@@ -18,14 +18,29 @@ const body = document.querySelector('body')
 const sunIcon = document.querySelector('.fa-sun')
 const moonIcon = document.querySelector('.fa-cloud-moon')
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
     try {
-    fillPage('rand');
+    await fillPage('rand');
     }
     catch {
-        fillPage();
+        await fillPage();
     }
 });
+
+
+
+const fillPage= async(dataType)=> {
+    data = await getData(dataType);
+    wordFunc();
+    removePriorMeanings();
+    meaningFunc();
+    phoneticFunc();
+    phoneticAudio();
+    partOfSpeechFunc();
+    sourceFunc();
+    synonymFunc();
+
+} 
 
 const getData = async (dataType) => {
     if (dataType === 'click') {
@@ -47,26 +62,25 @@ const getData = async (dataType) => {
 
 }
 
-const fillPage= async(dataType)=> {
-    data = await getData(dataType);
-    wordFunc();
-    removePriorMeanings();
-    meaningFunc();
-    phoneticFunc();
-    phoneticAudio();
-    partOfSpeechFunc();
-    sourceFunc();
-    synonymFunc();
-
-} 
 const phoneticFunc = async () => {
+    try {
     enunciate.textContent = data.phonetic
+    }
+    catch {
+    enunciate.textContent = `Error finding phonetic`
+    }
 }
 const wordFunc = async () => {
-    let firstLetter = data.word.slice(0, 1).toUpperCase();
+    try {
+            let firstLetter = data.word.slice(0, 1).toUpperCase();
     let rest = data.word.slice(1);
     word.textContent = firstLetter + rest
     search.value = '';
+
+    } catch {
+    word.textContent = `Error finding word`
+
+    }
 }
 const phoneticAudio = async () => {
     let phoneticArray = data.phonetics
@@ -86,14 +100,26 @@ playButton.addEventListener('click', () => {
 
 const partOfSpeechFunc = async () => {
     const meaningArray = data.meanings
-    const firstMeaningObject = meaningArray[0]
-    const secondMeaningObject = meaningArray[1]
+    try {
+            const firstMeaningObject = meaningArray[0]
     const firstPOSFirstLetter = firstMeaningObject.partOfSpeech.slice(0, 1)
     const firstPOSOtherLetters = firstMeaningObject.partOfSpeech.slice(1)
+
+            firstPOS.textContent = firstPOSFirstLetter.toUpperCase() + firstPOSOtherLetters
+
+    } catch (error) {
+    firstPOS.textContent =  `Unknown`
+    }
+    try {
+            const secondMeaningObject = meaningArray[1]
     const secondPOSFirstLetter = secondMeaningObject.partOfSpeech.slice(0, 1)
     const secondPOSOtherLetters = secondMeaningObject.partOfSpeech.slice(1)
-    firstPOS.textContent = firstPOSFirstLetter.toUpperCase() + firstPOSOtherLetters
-    secondPOS.textContent = secondPOSFirstLetter.toUpperCase() + secondPOSOtherLetters
+
+            secondPOS.textContent = secondPOSFirstLetter.toUpperCase() + secondPOSOtherLetters
+
+    } catch (error) {
+            secondPOS.textContent = `Unknown`
+    }
 }
 
 const meaningFunc = async () => {
@@ -132,6 +158,7 @@ const sourceFunc = async () => {
     sourceLink.href = source[0]
 }
 const synonymFunc = async () => {
+    try {
     const meaningsArray = data.meanings
     const meaningArray = meaningsArray[0]
     const synonymArray = meaningArray.synonyms
@@ -141,6 +168,10 @@ const synonymFunc = async () => {
     const synonym2nd = synonymWord.slice(1)
     synonymWord = synonym1st + synonym2nd
     synonym.textContent = `Synonym: ${synonymWord}`
+    } 
+    catch {
+    synonym.textContent = `Error finding synonym`
+    }
 }
 form.addEventListener('submit', (e) => {
     e.preventDefault();
